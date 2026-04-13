@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Disponibilidade de Salas{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📆 Disponibilidade de Salas</h2>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" class="d-flex gap-2">
+            <input type="date" name="data" value="{{ data_filtro|date:'Y-m-d' }}" min="{{ data_min }}" class="form-control">
+            <button type="submit" class="btn btn-primary">🔍 Filtrar</button>
+        </form>
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="{% url 'criar_reserva' %}" class="btn btn-success">➕ Reservar Agora</a>
+    </div>
+</div>
+
+<p class="text-muted">
+    Mostrando disponibilidade para <strong>{{ data_filtro|date:"d/m/Y" }}</strong>
+</p>
+
+<div class="row">
+    {% for item in espacos_disponibilidade %}
+    <div class="col-lg-4 mb-3">
+        <div class="card h-100 {% if item.disponivel %}border-success{% else %}border-warning{% endif %}">
+            <div class="card-header {% if item.disponivel %}bg-success text-white{% else %}bg-warning text-dark{% endif %}">
+                <h5 class="mb-0">{{ item.espaco.nome }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-1"><strong>Tipo:</strong> {{ item.espaco.get_tipo_display }}</p>
+                <p class="mb-1"><strong>Capacidade:</strong> {{ item.espaco.capacidade }} pessoas</p>
+                <p class="mb-2"><strong>Computadores:</strong> {% if item.espaco.possui_computadores %}✅{% else %}❌{% endif %}</p>
+                
+                {% if item.espaco.descricao %}
+                <p class="text-muted small">{{ item.espaco.descricao }}</p>
+                {% endif %}
+                
+                <hr>
+                
+                {% if item.disponivel %}
+                    <div class="alert alert-success mb-2">
+                        ✅ <strong>Disponível</strong> durante todo o dia
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning mb-2">
+                        ⏰ <strong>Ocupado em:</strong>
+                    </div>
+                    <ul class="list-unstyled small">
+                        {% for reserva in item.reservas %}
+                        <li class="text-muted">
+                            {{ reserva.hora_inicio|time:"H:i" }} - {{ reserva.hora_fim|time:"H:i" }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-transparent">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'criar_reserva' %}" class="btn btn-primary btn-sm w-100">📅 Reservar</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm w-100">🔑 Faça Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">ℹ️ Nenhuma sala cadastrada no sistema.</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

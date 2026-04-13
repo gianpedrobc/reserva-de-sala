@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes da Reserva{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h2 class="mb-4">📋 Detalhes da Reserva</h2>
+        
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ reserva.espaco }}</h5>
+                
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <th>Tipo:</th>
+                            <td>{{ reserva.espaco.get_tipo_display }}</td>
+                        </tr>
+                        <tr>
+                            <th>Data:</th>
+                            <td><strong>{{ reserva.data|date:"d/m/Y (l)" }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Horário:</th>
+                            <td><strong>{{ reserva.hora_inicio|time:"H:i" }} - {{ reserva.hora_fim|time:"H:i" }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Capacidade:</th>
+                            <td>{{ reserva.espaco.capacidade }} pessoas</td>
+                        </tr>
+                        <tr>
+                            <th>Computadores:</th>
+                            <td>{% if reserva.espaco.possui_computadores %}✅ Sim{% else %}❌ Não{% endif %}</td>
+                        </tr>
+                        {% if reserva.descricao %}
+                        <tr>
+                            <th>Motivo:</th>
+                            <td>{{ reserva.descricao }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th>Reservado por:</th>
+                            <td>{{ reserva.usuario.username }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-transparent">
+                <div class="d-flex gap-2">
+                    <a href="{% url 'editar_reserva' reserva.pk %}" class="btn btn-primary btn-sm">✏️ Editar</a>
+                    <a href="{% url 'cancelar_reserva' reserva.pk %}" class="btn btn-danger btn-sm">🗑️ Cancelar</a>
+                    <a href="{% url 'minhas_reservas' %}" class="btn btn-secondary btn-sm">Voltar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

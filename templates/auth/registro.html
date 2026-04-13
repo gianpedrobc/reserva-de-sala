@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar - ReservaSala{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg mt-5">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">📝 Criar Conta</h4>
+            </div>
+            <div class="card-body p-4">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">👤 Usuário</label>
+                        <input type="text" class="form-control" id="username" name="username" required 
+                               placeholder="Mínimo 3 caracteres" minlength="3">
+                        <small class="text-muted">Escolha um nome de usuário único</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">📧 Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required 
+                               placeholder="seu.email@example.com">
+                        <small class="text-muted">Usaremos este email para recuperar sua senha</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">🔐 Senha</label>
+                        <input type="password" class="form-control" id="password" name="password" required 
+                               placeholder="Mínimo 6 caracteres" minlength="6">
+                        <small class="text-muted">Use uma senha forte</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password_confirm" class="form-label">🔐 Confirmar Senha</label>
+                        <input type="password" class="form-control" id="password_confirm" name="password_confirm" required 
+                               placeholder="Repita sua senha">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100 mb-3">Criar Conta</button>
+                </form>
+                
+                <hr>
+                
+                <p class="text-center text-muted mb-0">
+                    Já tem uma conta? <a href="{% url 'login' %}" class="text-decoration-none">Faça login aqui</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

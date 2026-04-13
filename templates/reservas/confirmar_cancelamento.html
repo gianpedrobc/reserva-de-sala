@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancelar Reserva{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">⚠️ Confirmar Cancelamento</h5>
+            </div>
+            <div class="card-body">
+                <p>Tem certeza que deseja cancelar esta reserva?</p>
+                
+                <div class="alert alert-light">
+                    <p class="mb-1"><strong>{{ reserva.espaco }}</strong></p>
+                    <p class="mb-1">📅 {{ reserva.data|date:"d/m/Y (l)" }}</p>
+                    <p class="mb-0">🕐 {{ reserva.hora_inicio|time:"H:i" }} - {{ reserva.hora_fim|time:"H:i" }}</p>
+                </div>
+                
+                <p class="text-muted small">⚠️ Esta ação não pode ser desfeita.</p>
+            </div>
+            <div class="card-footer bg-light">
+                <form method="post" class="d-flex gap-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">🗑️ Sim, Cancelar</button>
+                    <a href="{% url 'minhas_reservas' %}" class="btn btn-secondary">Não, Voltar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

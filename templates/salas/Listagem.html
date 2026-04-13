@@ -1,38 +1,80 @@
 {% extends 'base.html' %}
 
-{% block title %}Salas e Laboratórios - Reserva de Salas{% endblock %}
+{% block title %}Salas Disponíveis{% endblock %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col-md-8">
-        <h1>Salas e Laboratórios Disponíveis</h1>
-    </div>
-    <div class="col-md-4">
-        <a href="/admin/" class="btn btn-primary float-end">Painel Admin</a>
+<h2 class="mb-4">🏫 Espaços Disponíveis</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<!-- Filtros -->
+<div class="card mb-4 bg-light">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="q" placeholder="🔍 Buscar por nome..." 
+                       value="{{ busca }}" />
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" name="tipo">
+                    <option value="">Todos os tipos</option>
+                    {% for value, label in tipos %}
+                    <option value="{{ value }}" {% if tipo_filtro == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">🔍 Filtrar</button>
+            </div>
+        </form>
     </div>
 </div>
 
-{% if salas %}
-    <div class="row">
-        {% for sala in salas %}
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">{{ sala.nome }}</h5>
-                    <p class="card-text">
-                        <strong>Tipo:</strong> {{ sala.get_tipo_display }}<br>
-                        <strong>Capacidade:</strong> {{ sala.capacidade }} pessoas<br>
-                        <strong>Computadores:</strong> {% if sala.possui_computadores %}Sim{% else %}Não{% endif %}
-                    </p>
-                    <a href="/reservar/{{ sala.id }}/" class="btn btn-success btn-sm">Reservar</a>
-                </div>
+<!-- Listagem de Salas -->
+<div class="row">
+    {% for sala in salas %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">{{ sala.nome }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-2"><strong>📍 Tipo:</strong> {{ sala.get_tipo_display }}</p>
+                <p class="mb-2"><strong>👥 Capacidade:</strong> {{ sala.capacidade }} pessoas</p>
+                <p class="mb-2"><strong>💻 Computadores:</strong> {% if sala.possui_computadores %}✅ Sim{% else %}❌ Não{% endif %}</p>
+                {% if sala.descricao %}
+                <p class="mb-0 text-muted small">{{ sala.descricao }}</p>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-transparent border-top-0">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'criar_reserva' %}" class="btn btn-success w-100">📅 Reservar</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary w-100">🔑 Faça Login</a>
+                {% endif %}
             </div>
         </div>
-        {% endfor %}
     </div>
-{% else %}
-    <div class="alert alert-info" role="alert">
-        Nenhuma sala cadastrada no sistema. Entre em contato com o administrador.
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            ℹ️ Nenhuma sala encontrada com os filtros selecionados.
+        </div>
     </div>
-{% endif %}
+    {% endfor %}
+</div>
+
+<!-- Ações Extras -->
+<div class="mt-4 text-center">
+    <a href="{% url 'disponibilidade' %}" class="btn btn-info">📆 Ver Disponibilidade por Data</a>
+</div>
 {% endblock %}

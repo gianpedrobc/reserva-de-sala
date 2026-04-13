@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - ReservaSala{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: calc(100vh - 200px);">
+    <div class="col-md-5">
+        <div class="card shadow-lg">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">🔑 Login</h4>
+            </div>
+            <div class="card-body p-4">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">👤 Usuário</label>
+                        <input type="text" class="form-control" id="username" name="username" required placeholder="Digite seu usuário">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">🔐 Senha</label>
+                        <input type="password" class="form-control" id="password" name="password" required placeholder="Digite sua senha">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Entrar</button>
+                </form>
+                
+                <hr>
+                
+                <p class="text-center text-muted mb-0">
+                    Não tem cadastro? <a href="{% url 'registrar' %}" class="text-decoration-none">Crie uma conta agora</a>
+                </p>
+            </div>
+            <div class="card-footer text-center bg-light">
+                <p class="text-muted small mb-0">Suas credenciais são protegidas</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

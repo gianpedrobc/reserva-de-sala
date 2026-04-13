@@ -14,18 +14,43 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">ReservaSala</a>
+            <a class="navbar-brand" href="/">🏫 ReservaSala</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Início</a>
+                        <a class="nav-link" href="{% url 'lista_salas' %}">🏠 Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Minhas Reservas</a>
+                        <a class="nav-link" href="{% url 'disponibilidade' %}">📆 Disponibilidade</a>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'minhas_reservas' %}">📅 Minhas Reservas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'criar_reserva' %}">➕ Nova Reserva</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            👤 {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><span class="dropdown-item-text text-muted small">{{ user.email }}</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">🚪 Sair</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">🔑 Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registrar' %}">📝 Registrar</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

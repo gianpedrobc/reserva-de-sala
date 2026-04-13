@@ -17,6 +17,7 @@ class Espaco(models.Model):
     tipo = models.CharField(max_length=10, choices=TipoEspaco.choices)
     capacidade = models.PositiveIntegerField()
     possui_computadores = models.BooleanField(default=False)
+    descricao = models.TextField(blank=True, null=True, default="Sem descrição")
     
     class Meta:
         ordering = ['nome']

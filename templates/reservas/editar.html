@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Reserva{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h2 class="mb-4">✏️ Editar Reserva</h2>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="alert alert-info mb-3">
+            <strong>{{ reserva.espaco }}</strong> - {{ reserva.data|date:"d/m/Y" }}
+        </div>
+        
+        <form method="post" class="needs-validation">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="id_espaco" class="form-label">Espaço *</label>
+                {{ form.espaco }}
+                {% if form.espaco.errors %}
+                    <div class="error text-danger">{{ form.espaco.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="id_data" class="form-label">Data *</label>
+                {{ form.data }}
+                {% if form.data.errors %}
+                    <div class="error text-danger">{{ form.data.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="id_hora_inicio" class="form-label">Hora Início *</label>
+                        {{ form.hora_inicio }}
+                        {% if form.hora_inicio.errors %}
+                            <div class="error text-danger">{{ form.hora_inicio.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="id_hora_fim" class="form-label">Hora Fim *</label>
+                        {{ form.hora_fim }}
+                        {% if form.hora_fim.errors %}
+                            <div class="error text-danger">{{ form.hora_fim.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="id_descricao" class="form-label">Descrição (Motivo)</label>
+                {{ form.descricao }}
+                {% if form.descricao.errors %}
+                    <div class="error text-danger">{{ form.descricao.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">✅ Salvar Alterações</button>
+                <a href="{% url 'minhas_reservas' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
