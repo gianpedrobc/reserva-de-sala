@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Salas e Laboratórios - Reserva de Salas{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>Salas e Laboratórios Disponíveis</h1>
+    </div>
+    <div class="col-md-4">
+        <a href="/admin/" class="btn btn-primary float-end">Painel Admin</a>
+    </div>
+</div>
+
+{% if salas %}
+    <div class="row">
+        {% for sala in salas %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ sala.nome }}</h5>
+                    <p class="card-text">
+                        <strong>Tipo:</strong> {{ sala.get_tipo_display }}<br>
+                        <strong>Capacidade:</strong> {{ sala.capacidade }} pessoas<br>
+                        <strong>Computadores:</strong> {% if sala.possui_computadores %}Sim{% else %}Não{% endif %}
+                    </p>
+                    <a href="/reservar/{{ sala.id }}/" class="btn btn-success btn-sm">Reservar</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info" role="alert">
+        Nenhuma sala cadastrada no sistema. Entre em contato com o administrador.
+    </div>
+{% endif %}
+{% endblock %}
