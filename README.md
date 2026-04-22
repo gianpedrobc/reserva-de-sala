@@ -1335,9 +1335,9 @@ in the Software without restriction...
 | Função | Responsável | Período |
 |--------|-------------|---------|
 | Arquitetura Backend | Gian | Sprint 1-4 |
-| Desenvolvimento Frontend | [Membro 2] | Sprint 2-4 |
-| Lógica de Negócio | [Membro 3] | Sprint 3 |
-| QA e Testes | [Membro 4] | Sprint 4 |
+| Desenvolvimento Frontend | [Icaro] | Sprint 2-4 |
+| Lógica de Negócio | [Cauã] | Sprint 3 |
+| QA e Testes | [Guilherme] | Sprint 4 |
 
 **Orientado por:** Prof. [Nome do Professor]
 
